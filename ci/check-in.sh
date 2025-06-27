@@ -10,7 +10,7 @@ if [ $# != 2 ]; then
          "https://rust-lang.zulipchat.com/#narrow/stream/238009-t-compiler.2Fmeetings/search/wg-rustc-dev-guide"
   elif [ $# = 1 ] ; then
     echo "help: you can find the number of PRs merged at" \
-         "https://github.com/rust-lang/rustc-dev-guide/pulls?q=is%3Apr+is%3Amerged+updated%3A%3E$1"
+         "https://github.com/LunaStev/rustc-dev-guide-kr/pulls?q=is%3Apr+is%3Amerged+updated%3A%3E$1"
   fi
   exit 1
 fi
@@ -20,7 +20,7 @@ curl() {
 }
 
 # Get recently updated PRs
-curl "https://api.github.com/repos/rust-lang/rustc-dev-guide/pulls?state=closed&per_page=$2" \
+curl "https://api.github.com/repos/LunaStev/rustc-dev-guide-kr/pulls?state=closed&per_page=$2" \
   | jq '[.[] | select(.merged_at > "'"$1"'")]' > pulls.json
 
 show_pulls() {
@@ -35,4 +35,4 @@ echo "### Most notable WIPs"
 echo
 # If there are more than 30 PRs open at a time, you'll need to set `per_page`.
 # For now this seems unlikely.
-curl "https://api.github.com/repos/rust-lang/rustc-dev-guide/pulls?state=open" | show_pulls
+curl "https://api.github.com/repos/LunaStev/rustc-dev-guide-kr/pulls?state=open" | show_pulls
