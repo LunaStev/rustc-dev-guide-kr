@@ -1,0 +1,36 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream and fetch
+        run: |
+          git remote add upstream https://github.com/rust-lang/rustc-dev-guide.git
+          git fetch upstream
+
+      - name: Replace changed src/ files
+        run: |
+          git diff upstream/master --name-only -- src/ | while read file; do
+            git checkout upstream/master -- "$file"
+          done
+
+      - name: Commit and push
+        run: |
+          git commit -am "🔄 자동 동기화: rust-lang 원본 반영"
+          git push
+        continue-on-error: true

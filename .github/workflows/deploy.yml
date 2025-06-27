@@ -29,6 +29,12 @@ jobs:
           cargo install mdbook-mermaid
           cargo install mdbook-linkcheck2
 
+      - name: Set executable permissions for linkcheck
+        run: chmod +x ci/linkcheck.sh
+
+      - name: Set executable permissions for check-in
+        run: chmod +x ci/check-in.sh
+
       - name: Build the book
         run: mdbook build
 
